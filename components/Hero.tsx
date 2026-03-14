@@ -92,7 +92,7 @@ export default function Hero() {
               <div className="mt-5 text-offwhite/90 text-sm uppercase tracking-[0.25em]">Flagship Prop</div>
               <h3 className="mt-3 text-[2.2rem] leading-tight sm:text-3xl font-bold text-white">14&quot; × 4.8&quot; CFRP</h3>
               <p className="mt-4 text-offwhite/80">
-                11.5g propeller with benchmark-level geometry. Matches T-Motor performance with up to 24% lower vibration.
+                11.5g propeller with benchmark-level geometry. Matches leading foreign benchmark performance with up to 24% lower vibration.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 text-sm">
                 <div className="rounded-xl bg-white/10 p-3 sm:p-4">

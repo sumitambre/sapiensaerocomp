@@ -3,11 +3,11 @@
 import { motion } from 'framer-motion';
 
 const data = [
-  { metric: 'Weight', sapiens: '11.5g', tMotor: '10.5g' },
-  { metric: 'Thrust', sapiens: 'High', tMotor: 'High' },
-  { metric: 'Mechanical Watts', sapiens: 'Low', tMotor: 'Medium' },
-  { metric: 'Electrical Watts', sapiens: 'Low', tMotor: 'Medium' },
-  { metric: 'Vibration', sapiens: '24% less', tMotor: 'Baseline' },
+  { metric: 'Weight', sapiens: '11.5g', benchmark: '10.5g' },
+  { metric: 'Thrust', sapiens: 'High', benchmark: 'High' },
+  { metric: 'Mechanical Watts', sapiens: 'Low', benchmark: 'Medium' },
+  { metric: 'Electrical Watts', sapiens: 'Low', benchmark: 'Medium' },
+  { metric: 'Vibration', sapiens: '24% less', benchmark: 'Baseline' },
 ];
 
 export default function Performance() {
@@ -35,7 +35,7 @@ export default function Performance() {
                 <tr className="text-navy-900">
                   <th className="p-3 text-sm uppercase tracking-wide">Metric</th>
                   <th className="p-3 text-sm uppercase tracking-wide">Sapiens-01</th>
-                  <th className="p-3 text-sm uppercase tracking-wide">T-Motor 14&quot; × 4.8&quot;</th>
+                  <th className="p-3 text-sm uppercase tracking-wide">Foreign Benchmark 14&quot; × 4.8&quot;</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,7 +43,7 @@ export default function Performance() {
                   <tr key={row.metric} className="border-t border-white/60">
                     <td className="p-3 font-medium">{row.metric}</td>
                     <td className="p-3 text-teal-500 font-semibold">{row.sapiens}</td>
-                    <td className="p-3 text-gray">{row.tMotor}</td>
+                    <td className="p-3 text-gray">{row.benchmark}</td>
                   </tr>
                 ))}
               </tbody>
@@ -71,7 +71,7 @@ export default function Performance() {
               </div>
               <div>
                 <div className="flex justify-between text-sm text-offwhite/70">
-                  <span>T-Motor</span>
+                  <span>Foreign benchmark</span>
                   <span>100%</span>
                 </div>
                 <div className="mt-2 h-3 rounded-full bg-white/10">
