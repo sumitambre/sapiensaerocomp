@@ -1,0 +1,57 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-navy: #003049;
+  --color-teal: #14939C;
+  --color-teal-2: #02969B;
+  --color-orange: #D95D39;
+  --color-amber: #F59E0B;
+  --color-offwhite: #EDEEE7;
+  --color-body: #495057;
+  --color-heading: #595758;
+  --color-gray: #9D9D9D;
+  --color-white: #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-body);
+  background: var(--color-offwhite);
+  width: 100%;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--color-heading);
+  letter-spacing: -0.02em;
+}
+
+.section-pad {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+.section-anchor {
+  scroll-margin-top: 6rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
