@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
@@ -15,6 +15,66 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [datasheetHref, setDatasheetHref] = useState('#contact');
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
+  useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_DATASHEET_URL?.trim();
+    if (!url) return;
+
+    // Absolute URLs: keep as-is (CORS may block preflight).
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      setDatasheetHref(url);
+      return;
+    }
+
+    // Relative URLs: verify asset exists to avoid 404s.
+    (async () => {
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        if (response.ok) setDatasheetHref(url);
+      } catch {
+        // keep fallback
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (open) return;
+    if (!pendingHref) return;
+
+    const href = pendingHref;
+    setPendingHref(null);
+
+    // Allow the menu close render + overflow unlock to apply before scrolling.
+    setTimeout(() => {
+      if (!href.startsWith('#')) {
+        window.location.href = href;
+        return;
+      }
+
+      const target = document.querySelector(href);
+      if (target instanceof HTMLElement) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      window.location.hash = href;
+    }, 0);
+  }, [open, pendingHref]);
+
+  function onNavClick(event: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    event.preventDefault();
+    setOpen(false);
+    setPendingHref(href);
+  }
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-offwhite/80 backdrop-blur-md border-b border-white/60">
@@ -41,7 +101,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#contact"
+              href={datasheetHref}
               className="bg-navy-900 text-white px-4 py-2 rounded-full text-xs tracking-wide hover:bg-teal-600 transition-colors"
             >
               Request Datasheet
@@ -70,15 +130,15 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className="block text-body font-semibold"
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => onNavClick(event, link.href)}
                 >
                   {link.label}
                 </a>
               ))}
               <a
-                href="#contact"
+                href={datasheetHref}
                 className="inline-flex items-center justify-center w-full bg-navy-900 text-white px-4 py-2 rounded-full text-xs tracking-wide"
-                onClick={() => setOpen(false)}
+                onClick={(event) => onNavClick(event, datasheetHref)}
               >
                 Request Datasheet
               </a>
@@ -89,4 +149,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
