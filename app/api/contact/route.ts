@@ -8,13 +8,23 @@ type ContactPayload = {
 };
 
 const resendApiKey = process.env.RESEND_API_KEY;
-const toEmail = process.env.CONTACT_TO_EMAIL;
+const toEmailRaw = process.env.CONTACT_TO_EMAIL;
 const fromEmail = process.env.CONTACT_FROM_EMAIL || 'Sapiens AeroComp <onboarding@resend.dev>';
 
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
+function parseRecipientEmails(value: string | undefined) {
+  if (!value) return [];
+  return value
+    .split(/[;,]/g)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
 export async function POST(request: Request) {
-  if (!resend || !toEmail) {
+  const toEmails = parseRecipientEmails(toEmailRaw);
+
+  if (!resend || toEmails.length === 0) {
     return NextResponse.json(
       { error: 'Email service is not configured. Set RESEND_API_KEY and CONTACT_TO_EMAIL.' },
       { status: 500 }
@@ -38,7 +48,7 @@ export async function POST(request: Request) {
 
     await resend.emails.send({
       from: fromEmail,
-      to: [toEmail],
+      to: toEmails,
       replyTo: email,
       subject: `New Contact Lead from ${email}`,
       text: `Sender: ${email}\nPhone: ${phone || 'Not provided'}\n\nMessage:\n${message}`,
