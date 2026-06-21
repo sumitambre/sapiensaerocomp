@@ -4,6 +4,7 @@ node_modules/
 # Next.js build output
 .next/
 out/
+*.tsbuildinfo
 
 # logs
 npm-debug.log*
@@ -20,4 +21,8 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Local Codex/agent workspace metadata
+.agents/
+.codex/
 

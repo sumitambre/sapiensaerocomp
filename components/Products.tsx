@@ -1,49 +1,50 @@
 ﻿'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const products = [
   {
     name: '14" × 4.8" CFRP',
     weight: '11.5g',
     desc: 'Carbon fiber (CFRP) drone propeller optimized for low vibration and benchmark-level geometry (flagship).',
-    img: '/images/14inch propeller made in India.png',
+    img: '/images/14x4-8-cfrp-propeller.png',
     alt: '14x4.8 inch carbon fiber (CFRP) drone propeller made in India',
   },
   {
     name: '26" × 7.8" CFRP',
     weight: '62g',
     desc: 'Carbon fiber (CFRP) UAV propeller for heavy-lift drones with ~3500g thrust at 1700 RPM.',
-    img: '/images/26inch propeller made in India.png',
+    img: '/images/26x7-8-cfrp-propeller.png',
     alt: '26x7.8 inch carbon fiber (CFRP) heavy lift drone propeller made in India',
   },
   {
     name: '18" × 6.1" CFRP',
     weight: 'In development',
     desc: 'Next-gen carbon fiber (CFRP) UAV propeller geometry under validation.',
-    img: '/images/18inch propeller made in India.png',
+    img: '/images/18x6-1-cfrp-propeller.png',
     alt: '18x6.1 inch carbon fiber (CFRP) UAV propeller in development',
   },
   {
     name: 'Carbon Fiber Plates',
     weight: '0.5–5mm',
     desc: 'Carbon fiber plates (0.5–5mm) with custom machining for drone structures, jigs, and tooling.',
-    img: '/images/carbon fiber plate made in india.jpg',
+    img: '/images/carbon-fiber-plate.jpg',
     alt: 'Carbon fiber plate sheet (0.5mm to 5mm) made in India',
   },
   {
     name: 'Custom UAV Body Part',
     weight: 'Built to Client Requirements',
-    desc: 'We provide end to end support for design, Development, and Batch manufacturing of UAV parts as per custom needs.',
-    img: '/images/Custom_UAV_Body_Part.jpg',
+    desc: 'We provide end-to-end support for the design, development, and batch manufacturing of UAV parts to meet custom requirements.',
+    img: '/images/custom-uav-body-part.jpg',
     alt: 'Custom UAV body part design, development, and batch manufacturing support',
   },
   {
     name: 'Custom Propeller Development',
     weight: 'Built to Client Requirements',
-    desc: 'We provide end to end support for design, Development, and Batch manufacturing of UAV parts as per custom needs.',
-    img: '/images/customer carbon fiber mold.png',
-    alt: 'Custom UAV body part design, development, and batch manufacturing support',
+    desc: 'We provide end-to-end support for custom propeller design, development, validation, and batch manufacturing.',
+    img: '/images/custom-carbon-fiber-mold.png',
+    alt: 'Custom carbon fiber propeller mold for design, development, and batch manufacturing',
   },
 ];
 
@@ -70,11 +71,13 @@ export default function Products() {
               whileHover={{ y: -8 }}
               className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
             >
-              <div className="h-44 bg-gray-100">
-                <img
+              <div className="relative h-44 bg-gray-100">
+                <Image
                   src={product.img}
                   alt={product.alt ?? product.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
                 />
               </div>
               <div className="p-6">

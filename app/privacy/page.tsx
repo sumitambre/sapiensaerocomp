@@ -3,6 +3,15 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Privacy policy for Sapiens AeroComp website.',
+  alternates: {
+    canonical: '/privacy/',
+  },
+  openGraph: {
+    type: 'website',
+    url: '/privacy/',
+    title: 'Privacy Policy | Sapiens AeroComp',
+    description: 'Privacy policy for Sapiens AeroComp website.',
+  },
 };
 
 export default function PrivacyPage() {
@@ -38,8 +47,8 @@ export default function PrivacyPage() {
       <h2 className="mt-10 text-2xl font-bold text-navy-900">Contact</h2>
       <p className="mt-4 text-body">
         For privacy questions, email:{' '}
-        <a className="text-teal-600 underline" href="mailto:k.shubham@sapiensaerocomp.com">
-          k.shubham@sapiensaerocomp.com
+        <a className="text-teal-600 underline" href="mailto:k_shubham@sapiensaerocomp.com">
+          k_shubham@sapiensaerocomp.com
         </a>
       </p>
     </main>

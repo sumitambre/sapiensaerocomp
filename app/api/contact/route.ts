@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { sanityWriteClient } from '@/sanity/lib/client';
 
 type ContactPayload = {
   email?: string;
   phone?: string;
   message?: string;
+  website?: string;
+  sourcePage?: string;
 };
 
 const resendApiKey = process.env.RESEND_API_KEY;
@@ -24,10 +27,10 @@ function parseRecipientEmails(value: string | undefined) {
 export async function POST(request: Request) {
   const toEmails = parseRecipientEmails(toEmailRaw);
 
-  if (!resend || toEmails.length === 0) {
+  if (!sanityWriteClient) {
     return NextResponse.json(
-      { error: 'Email service is not configured. Set RESEND_API_KEY and CONTACT_TO_EMAIL.' },
-      { status: 500 }
+      { error: 'Contact storage is not configured. Set SANITY_API_WRITE_TOKEN.' },
+      { status: 503 }
     );
   }
 
@@ -36,6 +39,12 @@ export async function POST(request: Request) {
     const email = body.email?.trim();
     const phone = body.phone?.trim();
     const message = body.message?.trim();
+    const website = body.website?.trim();
+    const sourcePage = body.sourcePage?.trim();
+
+    if (website) {
+      return NextResponse.json({ ok: true });
+    }
 
     if (!email || !message) {
       return NextResponse.json({ error: 'Email and message are required.' }, { status: 400 });
@@ -46,16 +55,48 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Please provide a valid email address.' }, { status: 400 });
     }
 
-    await resend.emails.send({
-      from: fromEmail,
-      to: toEmails,
-      replyTo: email,
-      subject: `New Contact Lead from ${email}`,
-      text: `Sender: ${email}\nPhone: ${phone || 'Not provided'}\n\nMessage:\n${message}`,
-    });
+    if (message.length > 5000 || (phone && phone.length > 80)) {
+      return NextResponse.json({ error: 'The submitted message is too long.' }, { status: 400 });
+    }
+
+    const submittedAt = new Date().toISOString();
+
+    try {
+      await sanityWriteClient.create({
+        _type: 'contactSubmission',
+        status: 'new',
+        submittedAt,
+        email,
+        phone: phone || undefined,
+        message,
+        sourcePage: sourcePage || '/',
+      });
+    } catch (error) {
+      console.error('Failed to save contact submission to Sanity.', error);
+      return NextResponse.json(
+        { error: 'Failed to save your message. Check the Sanity write token and try again.' },
+        { status: 502 }
+      );
+    }
+
+    if (resend && toEmails.length > 0) {
+      try {
+        await resend.emails.send({
+          from: fromEmail,
+          to: toEmails,
+          replyTo: email,
+          subject: `New Contact Lead from ${email}`,
+          text: `Sender: ${email}\nPhone: ${phone || 'Not provided'}\n\nMessage:\n${message}`,
+        });
+      } catch (error) {
+        // The lead is already safely stored in Sanity. Email is only a notification.
+        console.error('Contact submission was saved, but the Resend notification failed.', error);
+      }
+    }
 
     return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: 'Failed to send email. Please try again.' }, { status: 500 });
+  } catch (error) {
+    console.error('Invalid contact submission request.', error);
+    return NextResponse.json({ error: 'Invalid contact request.' }, { status: 400 });
   }
 }

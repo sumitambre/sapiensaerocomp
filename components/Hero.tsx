@@ -1,34 +1,10 @@
 ﻿'use client';
 
 import { motion } from 'framer-motion';
-import { Download, Mail } from 'lucide-react';
+import { FileText, Mail } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 export default function Hero() {
-  const [datasheetHref, setDatasheetHref] = useState('#contact');
-
-  useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_DATASHEET_URL?.trim();
-    if (!url) return;
-
-    // Absolute URLs: keep as-is (CORS may block preflight).
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      setDatasheetHref(url);
-      return;
-    }
-
-    // Relative URLs: verify asset exists to avoid 404s.
-    (async () => {
-      try {
-        const response = await fetch(url, { method: 'HEAD' });
-        if (response.ok) setDatasheetHref(url);
-      } catch {
-        // keep fallback to #contact
-      }
-    })();
-  }, []);
-
   return (
     <section id="hero" className="section-anchor relative isolate min-h-screen pt-20 pb-12 md:pt-24 md:pb-16 flex items-center overflow-hidden">
       <div
@@ -74,11 +50,11 @@ export default function Hero() {
                 className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4"
               >
                 <a
-                  href={datasheetHref}
+                  href="#contact"
                   className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-orange-500 text-white px-6 py-4 rounded-full font-semibold shadow-glow hover:bg-orange-500/90 transition"
                 >
-                  <Download size={18} />
-                  Request Datasheet
+                  <FileText size={18} />
+                  Request a Quote
                 </a>
                 <a
                   href="#contact"

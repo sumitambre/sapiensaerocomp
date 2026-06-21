@@ -6,17 +6,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 const links = [
-  { href: '#about', label: 'About' },
-  { href: '#solutions', label: 'Solutions' },
-  { href: '#products', label: 'Products' },
-  { href: '#performance', label: 'Performance' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#about', label: 'About' },
+  { href: '/#solutions', label: 'Solutions' },
+  { href: '/#products', label: 'Products' },
+  { href: '/#performance', label: 'Performance' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [pendingHref, setPendingHref] = useState<string | null>(null);
-  const [datasheetHref, setDatasheetHref] = useState('#contact');
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -24,27 +24,6 @@ export default function Navbar() {
       document.body.style.overflow = '';
     };
   }, [open]);
-
-  useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_DATASHEET_URL?.trim();
-    if (!url) return;
-
-    // Absolute URLs: keep as-is (CORS may block preflight).
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      setDatasheetHref(url);
-      return;
-    }
-
-    // Relative URLs: verify asset exists to avoid 404s.
-    (async () => {
-      try {
-        const response = await fetch(url, { method: 'HEAD' });
-        if (response.ok) setDatasheetHref(url);
-      } catch {
-        // keep fallback
-      }
-    })();
-  }, []);
 
   useEffect(() => {
     if (open) return;
@@ -80,7 +59,7 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-50 bg-offwhite/80 backdrop-blur-md border-b border-white/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <a href="#hero" className="flex items-center">
+          <a href="/" className="flex items-center">
             <Image
               src="/images/company-logo.png"
               alt="Sapiens AeroComp logo"
@@ -101,10 +80,10 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href={datasheetHref}
+              href="/#contact"
               className="bg-navy-900 text-white px-4 py-2 rounded-full text-xs tracking-wide hover:bg-teal-600 transition-colors"
             >
-              Request Datasheet
+              Request a Quote
             </a>
           </div>
           <button
@@ -136,11 +115,11 @@ export default function Navbar() {
                 </a>
               ))}
               <a
-                href={datasheetHref}
+                href="/#contact"
                 className="inline-flex items-center justify-center w-full bg-navy-900 text-white px-4 py-2 rounded-full text-xs tracking-wide"
-                onClick={(event) => onNavClick(event, datasheetHref)}
+                onClick={(event) => onNavClick(event, '/#contact')}
               >
-                Request Datasheet
+                Request a Quote
               </a>
             </div>
           </motion.div>

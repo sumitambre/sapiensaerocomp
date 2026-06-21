@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin } from 'lucide-react';
+import { Linkedin, Mail, MapPin } from 'lucide-react';
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,6 +23,8 @@ export default function Contact() {
       email: String(formData.get('email') || '').trim(),
       phone: String(formData.get('phone') || '').trim(),
       message: String(formData.get('message') || '').trim(),
+      website: String(formData.get('website') || '').trim(),
+      sourcePage: window.location.pathname,
     };
 
     try {
@@ -40,7 +42,7 @@ export default function Contact() {
       }
 
       form.reset();
-      setStatus({ type: 'success', message: 'Thanks. Your message has been sent successfully.' });
+      setStatus({ type: 'success', message: 'Thanks. Your message has been received successfully.' });
     } catch (error) {
       setStatus({
         type: 'error',
@@ -70,14 +72,45 @@ export default function Contact() {
             viewport={{ once: true }}
             className="space-y-6"
           >
+            <div className="absolute -left-[9999px]" aria-hidden="true">
+              <label>
+                Website
+                <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+              </label>
+            </div>
             <p className="text-lg text-offwhite/80">
               Share your thrust requirements, platform constraints, or custom geometry needs through the form. We&apos;ll review the details and respond by email.
             </p>
             <div className="space-y-4 text-base">
               <div className="flex items-center gap-3">
                 <MapPin className="text-teal-400" size={22} />
-                <span>Pune, India</span>
+                <span>Sapiens AeroComp Pvt. Ltd., Pune, Maharashtra, India</span>
               </div>
+              <a
+                className="flex items-center gap-3 text-offwhite/90 transition hover:text-white"
+                href="mailto:k_shubham@sapiensaerocomp.com"
+              >
+                <Mail className="text-teal-400" size={22} />
+                <span>k_shubham@sapiensaerocomp.com</span>
+              </a>
+              <a
+                className="flex items-center gap-3 text-offwhite/90 transition hover:text-white"
+                href="https://in.linkedin.com/company/sapiens-aerocomp"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <Linkedin className="text-teal-400" size={22} />
+                <span>Sapiens AeroComp on LinkedIn</span>
+              </a>
+              <a
+                className="flex items-center gap-3 text-offwhite/90 transition hover:text-white"
+                href="https://in.linkedin.com/in/shubhamkhobragade"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <Linkedin className="text-teal-400" size={22} />
+                <span>Shubham Khobragade on LinkedIn</span>
+              </a>
             </div>
           </motion.div>
           <motion.form

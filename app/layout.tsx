@@ -12,6 +12,9 @@ const body = Manrope({
   variable: '--font-body',
 });
 
+const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+const bingSiteVerification = process.env.BING_SITE_VERIFICATION?.trim();
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://www.sapiensaerocomp.com'),
   title: {
@@ -20,6 +23,10 @@ export const metadata: Metadata = {
   },
   description:
     'Indian manufacturer in Pune of carbon fiber (CFRP) drone/UAV propellers engineered for low vibration and high efficiency. Also offering custom carbon fiber mold design and manufacturing.',
+  authors: [{ name: 'Sapiens AeroComp Pvt. Ltd.', url: '/' }],
+  creator: 'Sapiens AeroComp Pvt. Ltd.',
+  publisher: 'Sapiens AeroComp Pvt. Ltd.',
+  category: 'Aerospace manufacturing',
   keywords: [
     'carbon fiber propeller',
     'carbon fiber drone propellers',
@@ -50,29 +57,25 @@ export const metadata: Metadata = {
     type: 'website',
     url: '/',
     siteName: 'Sapiens AeroComp',
+    locale: 'en_IN',
     title: 'Sapiens AeroComp | Carbon Fiber (CFRP) Drone Propellers & Custom Molds',
     description:
       'High-performance carbon fiber (CFRP) drone/UAV propellers built for low vibration and reliability, plus custom carbon fiber mold design and manufacturing.',
-    images: [
-      {
-        url: '/images/hero-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Carbon fiber (CFRP) drone propellers by Sapiens AeroComp',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sapiens AeroComp | Carbon Fiber (CFRP) Drone Propellers',
     description:
       'Carbon fiber (CFRP) drone/UAV propellers for low vibration and high efficiency. Custom carbon fiber molds available.',
-    images: ['/images/hero-image.png'],
   },
   icons: {
     icon: '/images/favicon.png',
     shortcut: '/images/favicon.png',
     apple: '/images/favicon.png',
+  },
+  verification: {
+    google: googleSiteVerification || undefined,
+    other: bingSiteVerification ? { 'msvalidate.01': bingSiteVerification } : undefined,
   },
 };
 
